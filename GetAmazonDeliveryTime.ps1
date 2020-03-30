@@ -34,18 +34,23 @@ while ($hit -eq $false) {
             $login_button.click()
         }
 
-        ## Get Page and Go To Cart
-        $doc = $ie.Document
-        Write-Progress -Activity "Going to Cart" -PercentComplete 25
-        $cart = $doc.getElementById("nav-cart")
-        $cart.click()
-        sleep -Seconds 2
-        while($ie.Busy) { Start-Sleep -Milliseconds 100 }
-        $doc = $ie.Document
-        Write-Progress -Activity "Going to Check Pages" -PercentComplete 50
-        $ie.navigate($check_page)
-        sleep -Seconds 3
-        while($ie.Busy) { Start-Sleep -Milliseconds 100 }
+        ## Check if date times are there
+        if ($ie.LocationURL.ToLower() -inotlike "*ox_sc_fresh_slot_select*")
+        {
+            ## Get Page and Go To Cart
+            $doc = $ie.Document
+            Write-Progress -Activity "Going to Cart" -PercentComplete 25
+            $cart = $doc.getElementById("nav-cart")
+            $cart.click()
+            sleep -Seconds 2
+            while($ie.Busy) { Start-Sleep -Milliseconds 100 }
+            $doc = $ie.Document
+            Write-Progress -Activity "Going to Check Pages" -PercentComplete 50
+            $ie.navigate($check_page)
+            sleep -Seconds 3
+            while($ie.Busy) { Start-Sleep -Milliseconds 100 }
+        }
+        
         $doc = $ie.Document
         $day_buttons = $doc.getElementsByClassName("a-size-base-plus date-button-text a-text-bold")
         $day_buttons[$i].click()
